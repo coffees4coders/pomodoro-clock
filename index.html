@@ -3,22 +3,28 @@
 <head>
   <meta charset="utf-8">
   <title></title>
-  <link href="" rel="stylesheet">
-  <script src=""></script>
+  <link href="styles.css" rel="stylesheet">
+  <script src="app.js"></script>
 </head>
 <body>
-  <div class="break-length">
+  <div class="time-selector break-length">
     <button id="break-minus">-</button>
     <span class="indicator break-time" id="break-time">5</span>
     <button id="break-plus">+</button>
   </div>
-  <div class="session-length">
+  <div class="time-selector session-length">
     <button id="session-minus">-</button>
     <span class="indicator session-time" id="session-time">25</span>
     <button id="session-plus">+</button>
   </div>
 
-  <div class="timer-display"></div>
+  <div class="timer-display">
+    <h3>Session</h3>
+    <div class="timer" id="timer">25:00</div>
+
+
+  </div>
+
 
 </body>
 </html>
