@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     breakTimer.innerHTML = currentNumber + 1;
-
   });
 
   sessionMinusButton.addEventListener('click', function() {
@@ -42,31 +41,47 @@ document.addEventListener('DOMContentLoaded', function() {
     var currentNumber = parseInt(sessionTimer.innerHTML);
 
     sessionTimer.innerHTML = currentNumber + 1;
-
   });
-
 });
 
+// break this up into two objects to handle break and session timers
+var timer = {
+  timerSetting: '25:00',
+  breakSetting: '5:00',
+  currentSeconds: 0
+
+};
+
+function convertSecondsToDisplayTime(seconds) {
+
+  var timerSeconds = seconds;
+  var newDisplayTime = parseInt(timerSeconds / 60).toString() + ':' +
+                    (timerSeconds % 60).toString();
+
+  // returns minutes and seconds in a string
+  return newDisplayTime;
+}
+
+function startTimer(seconds) {
+  var timer = seconds;
+
+  var timeStamp = new Date().getTime();
+  var prevTime = 0;
+  var interval = setInterval(function() {
+    var diff = (new Date().getTime() - timeStamp) / 1000;
+    var newTime = parseInt(timer - diff);
+
+    if (newTime !== prevTime) {
+      console.log('update display with new time: ' + convertSecondsToDisplayTime(newTime));
+    }
+
+  prevTime = newTime;
+
+  }, 250);
 
 
-var timer = 30;
+  setTimeout(function() {clearInterval(interval)}, 20000);
 
-var startTime = new Date().getTime();
+}
 
-setInterval(function() {
-  if (new Date().getTime() - startTime >) {
-    console.log('1 second elapsed');
-    console.log(new Date().getSeconds());
-  }
-}, 500);
-
-
-console.log(startTime);
-
-// setInterval(function() {
-//
-//   if (startTime.getSeconds() !== new Date().getSeconds()) {
-//     console.log(new Date().getSeconds());
-//   }
-//
-// }, 200);
+startTimer(300);
