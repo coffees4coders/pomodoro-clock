@@ -63,6 +63,10 @@ table {
 .time-selector {
 }
 
+.control-button-container {
+  margin-top: 30px;
+}
+
 .indicator {
   width: 30px;
   display: inline-block;
