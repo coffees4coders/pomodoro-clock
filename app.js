@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
       sessionPlusButton = document.getElementById('session-plus'),
       startButton = document.getElementById('start-button'),
       stopButton = document.getElementById('stop-button'),
-      resetButton = document.getElementById('reset-button');
+      resetButton = document.getElementById('reset-button'),
+      countDownDisplay = document.getElementById('countdown-timer');
 
   breakMinusButton.addEventListener('click', function() {
     var breakTimer = document.getElementById('break-time');
@@ -48,7 +49,19 @@ document.addEventListener('DOMContentLoaded', function() {
 var timer = {
   timerSetting: '25:00',
   breakSetting: '5:00',
-  currentSeconds: 0
+  currentSeconds: 0,
+  // this will point to the countdown timer <div id="countdown-timer">
+  countDown: '25:00',
+
+  // takes a string in mm:ss format and updates the countDown prop
+  updateTimer: function(newTime) {
+    this.countDown = newTime;
+  },
+
+  // updates the view with new time for the countdown timer
+  updateDisplay: function() {
+    countDownDisplay.innerHTML = this.countDown;
+  }
 
 };
 
