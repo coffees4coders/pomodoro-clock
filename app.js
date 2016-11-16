@@ -8,22 +8,21 @@ document.addEventListener('DOMContentLoaded', function() {
       sessionPlusButton = document.getElementById('session-plus'),
       startButton = document.getElementById('start-button'),
       stopButton = document.getElementById('stop-button'),
-      resetButton = document.getElementById('reset-button'),
-      countDownDisplay = document.getElementById('countdown-timer');
+      resetButton = document.getElementById('reset-button');
+
 
   breakMinusButton.addEventListener('click', function() {
     var breakTimer = document.getElementById('break-time');
     var currentNumber = parseInt(breakTimer.innerHTML);
 
     if (currentNumber > 0) {
-    breakTimer.innerHTML = currentNumber - 1;
+      breakTimer.innerHTML = currentNumber - 1;
     }
   });
 
   breakPlusButton.addEventListener('click', function() {
     var breakTimer = document.getElementById('break-time');
     var currentNumber = parseInt(breakTimer.innerHTML);
-
 
     breakTimer.innerHTML = currentNumber + 1;
   });
@@ -33,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var currentNumber = parseInt(sessionTimer.innerHTML);
 
     if (currentNumber > 0) {
-    sessionTimer.innerHTML = currentNumber - 1;
+      sessionTimer.innerHTML = currentNumber - 1;
     }
   });
 
@@ -43,27 +42,73 @@ document.addEventListener('DOMContentLoaded', function() {
 
     sessionTimer.innerHTML = currentNumber + 1;
   });
+
+  startButton.addEventListener('click', function() {
+    timer.startTimer();
+  });
+
+  stopButton.addEventListener('click', function() {
+    timer.stopTimer();
+  });
+
+  resetButton.addEventListener('click', function() {
+    // add code
+  });
+
 });
 
 // break this up into two objects to handle break and session timers
 var timer = {
-  timerSetting: '25:00',
-  breakSetting: '5:00',
+  // all units of time are in seconds
+  timerSetting: 1500,
+  breakSetting: 5,
   currentSeconds: 0,
   // this will point to the countdown timer <div id="countdown-timer">
   countDown: '25:00',
+  currentIntervalID: null,
 
   // takes a string in mm:ss format and updates the countDown prop
   updateTimer: function(newTime) {
     this.countDown = newTime;
   },
+  startTimer: function() {
+    // main countdown clock
+    var countDownDisplay = document.getElementById('countdown-timer');
 
-  // updates the view with new time for the countdown timer
-  updateDisplay: function() {
-    countDownDisplay.innerHTML = this.countDown;
+    var timer = this.timerSetting;
+
+    var timeStamp = new Date().getTime();
+    var prevTime = 0;
+    var intervalID = setInterval(function() {
+      var diff = (new Date().getTime() - timeStamp) / 1000;
+      var newTime = parseInt(timer - diff);
+
+      if (newTime !== prevTime) {
+        updateDisplay(countDownDisplay, newTime)
+        // console.log('update display with new time: ' + convertSecondsToDisplayTime(newTime));
+      }
+
+    prevTime = newTime;
+
+    }, 250);
+
+
+    // setTimeout(function() {clearInterval(intervalID)}, 20000);
+    this.currentIntervalID = intervalID;
+  },
+
+  stopTimer: function() {
+    clearInterval(this.currentIntervalID);
   }
 
 };
+
+// takes ref to div and updates with new time
+function updateDisplay(timerObject, seconds) {
+
+    timerObject.innerHTML = convertSecondsToDisplayTime(seconds);
+
+}
 
 function convertSecondsToDisplayTime(seconds) {
 
@@ -74,27 +119,3 @@ function convertSecondsToDisplayTime(seconds) {
   // returns minutes and seconds in a string
   return newDisplayTime;
 }
-
-function startTimer(seconds) {
-  var timer = seconds;
-
-  var timeStamp = new Date().getTime();
-  var prevTime = 0;
-  var interval = setInterval(function() {
-    var diff = (new Date().getTime() - timeStamp) / 1000;
-    var newTime = parseInt(timer - diff);
-
-    if (newTime !== prevTime) {
-      console.log('update display with new time: ' + convertSecondsToDisplayTime(newTime));
-    }
-
-  prevTime = newTime;
-
-  }, 250);
-
-
-  setTimeout(function() {clearInterval(interval)}, 20000);
-
-}
-
-startTimer(300);
