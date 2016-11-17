@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   sessionMinusButton.addEventListener('click', function() {
     var sessionTimer = document.getElementById('session-time');
-    var currentNumber = parseInt(sessionTimer.innerHTML);
 
-    if (currentNumber > 0) {
-      sessionTimer.innerHTML = currentNumber - 1;
+    if (timer.sessionSetting > 0) {
+      timer.sessionSetting -= 60;
+      updateDisplay(sessionTimer, timer.sessionSetting);
     }
   });
 
@@ -41,6 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var currentNumber = parseInt(sessionTimer.innerHTML);
 
     sessionTimer.innerHTML = currentNumber + 1;
+      timer.timerSetting += 60;
+
   });
 
   startButton.addEventListener('click', function() {
@@ -57,25 +59,51 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+// takes ref to div and updates with new time
+function updateDisplay(timerObject, seconds) {
+
+
+  timerObject.innerHTML = convertSecondsToDisplayTime(seconds);
+
+
+}
+
+/*
+  Parameters:
+     seconds: number -  seconds to be converted into mm (optionally mm:ss)
+     includeSeconds: bool - if true: display as mm:ss, false (default value): mm
+  Returns a string
+*/
+function convertSecondsToDisplayTime(seconds, includeSeconds) {
+
+// FIXME: output for 61 is '1:1', it should be '1:01'
+  var newDisplayTime = parseInt(seconds / 60).toString() + ':' +
+                    (seconds % 60).toString();
+
+  // returns minutes and seconds in a string
+  return newDisplayTime;
+}
+
+
 // break this up into two objects to handle break and session timers
 var timer = {
   // all units of time are in seconds
-  timerSetting: 1500,
-  breakSetting: 5,
+  sessionSetting: 1500,
+  breakSetting: 300,
   currentSeconds: 0,
-  // this will point to the countdown timer <div id="countdown-timer">
-  countDown: '25:00',
   currentIntervalID: null,
-
-  // takes a string in mm:ss format and updates the countDown prop
-  updateTimer: function(newTime) {
-    this.countDown = newTime;
+  // takes two parameters
+  // timer specifies if it's the break or session timer
+  // seconds is the number of seconds
+  updateTimer: function(timer, seconds) {
+    // countDownDisplay.innerHTML = convertSecondsToDisplayTime(seconds);
   },
+
   startTimer: function() {
     // main countdown clock
-    var countDownDisplay = document.getElementById('countdown-timer');
+    var countDownDisplay = document.getElementById('main-countdown-timer');
 
-    var timer = this.timerSetting;
+    var timer = this.sessionSetting;
 
     var timeStamp = new Date().getTime();
     var prevTime = 0;
@@ -83,9 +111,10 @@ var timer = {
       var diff = (new Date().getTime() - timeStamp) / 1000;
       var newTime = parseInt(timer - diff);
 
+      // the view is only updated if the number of seconds has change since
+      // the last time this method is called
       if (newTime !== prevTime) {
-        updateDisplay(countDownDisplay, newTime)
-        // console.log('update display with new time: ' + convertSecondsToDisplayTime(newTime));
+        updateDisplay(countDownDisplay, newTime);
       }
 
     prevTime = newTime;
@@ -102,20 +131,3 @@ var timer = {
   }
 
 };
-
-// takes ref to div and updates with new time
-function updateDisplay(timerObject, seconds) {
-
-    timerObject.innerHTML = convertSecondsToDisplayTime(seconds);
-
-}
-
-function convertSecondsToDisplayTime(seconds) {
-
-  var timerSeconds = seconds;
-  var newDisplayTime = parseInt(timerSeconds / 60).toString() + ':' +
-                    (timerSeconds % 60).toString();
-
-  // returns minutes and seconds in a string
-  return newDisplayTime;
-}
