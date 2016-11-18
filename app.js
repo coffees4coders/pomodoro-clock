@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   breakMinusButton.addEventListener('click', function() {
     var breakTimer = document.getElementById('break-time');
-  
+
     if (timer.breakSetting > 0) {
       timer.breakSetting -= 60;
       updateDisplay(breakTimer, timer.breakSetting);
@@ -70,6 +70,25 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 });
+
+// TODO: finish displayAlert()
+function displayAlert(breakOrSession) {
+  var alertDiv = document.getElementById('alert-box'),
+      alertText = document.getElementById('alert-text'),
+      alertButton = document.getElementById('alert-button');
+
+  alertDiv.className += ' show';
+
+
+  if (breakOrSession === 'break') {
+
+  } else {
+
+  }
+
+
+
+}
 
 
 /*
