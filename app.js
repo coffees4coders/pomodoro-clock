@@ -13,18 +13,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   breakMinusButton.addEventListener('click', function() {
     var breakTimer = document.getElementById('break-time');
-    var currentNumber = parseInt(breakTimer.innerHTML);
-
-    if (currentNumber > 0) {
-      breakTimer.innerHTML = currentNumber - 1;
+  
+    if (timer.breakSetting > 0) {
+      timer.breakSetting -= 60;
+      updateDisplay(breakTimer, timer.breakSetting);
     }
   });
 
   breakPlusButton.addEventListener('click', function() {
     var breakTimer = document.getElementById('break-time');
-    var currentNumber = parseInt(breakTimer.innerHTML);
 
-    breakTimer.innerHTML = currentNumber + 1;
+    timer.breakSetting += 60;
+    updateDisplay(breakTimer, timer.breakSetting);
   });
 
   sessionMinusButton.addEventListener('click', function() {
@@ -71,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// takes ref to div and updates with new time
 
 /*
   Parameters:
@@ -95,8 +94,6 @@ function updateDisplay(timerObject, seconds, includeSeconds) {
   Returns a string
 */
 function convertSecondsToDisplayTime(seconds, includeSeconds) {
-
-// FIXME: output for 61 is '1:1', it should be '1:01'
   var newDisplayTime, minutes, seconds;
 
   minutes = parseInt(seconds / 60).toString();
@@ -117,7 +114,7 @@ function convertSecondsToDisplayTime(seconds, includeSeconds) {
 }
 
 
-// break this up into two objects to handle break and session timers
+// break this up into two objects to handle break and session timers, maybe
 var timer = {
   // all units of time are in seconds
   sessionSetting: 1500,
