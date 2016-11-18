@@ -28,29 +28,41 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   sessionMinusButton.addEventListener('click', function() {
-    var sessionTimer = document.getElementById('session-time');
+    if (!timer.timerRunning) {
+      var sessionTimer = document.getElementById('session-time'),
+          mainCountdownTimer = document.getElementById('main-countdown-timer');
 
-    if (timer.sessionSetting > 0) {
-      timer.sessionSetting -= 60;
-      updateDisplay(sessionTimer, timer.sessionSetting);
+      if (timer.sessionSetting > 0) {
+        timer.sessionSetting -= 60;
+        updateDisplay(sessionTimer, timer.sessionSetting);
+        updateDisplay(mainCountdownTimer, timer.sessionSetting, true);
+
+      }
     }
   });
 
   sessionPlusButton.addEventListener('click', function() {
-    var sessionTimer = document.getElementById('session-time');
-    var currentNumber = parseInt(sessionTimer.innerHTML);
+    if (!timer.timerRunning) {
+      var sessionTimer = document.getElementById('session-time'),
+          mainCountdownTimer = document.getElementById('main-countdown-timer');
 
-    sessionTimer.innerHTML = currentNumber + 1;
-      timer.timerSetting += 60;
+      timer.sessionSetting += 60;
+      updateDisplay(sessionTimer, timer.sessionSetting);
+      updateDisplay(mainCountdownTimer, timer.sessionSetting, true);
+    }
 
   });
 
   startButton.addEventListener('click', function() {
     timer.startTimer();
+    timer.timerRunning = true;
+
   });
 
   stopButton.addEventListener('click', function() {
     timer.stopTimer();
+    timer.timerRunning = false;
+
   });
 
   resetButton.addEventListener('click', function() {
@@ -60,10 +72,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // takes ref to div and updates with new time
-function updateDisplay(timerObject, seconds) {
+
+/*
+  Parameters:
+     timerObject: the div on the display that shows a time
+     seconds: number -  seconds to be converted into mm (optionally mm:ss)
+     includeSeconds: bool - if true: display as mm:ss, false (default value): mm
+  Returns a string
+*/
+function updateDisplay(timerObject, seconds, includeSeconds) {
 
 
-  timerObject.innerHTML = convertSecondsToDisplayTime(seconds);
+  timerObject.innerHTML = convertSecondsToDisplayTime(seconds, includeSeconds);
 
 
 }
@@ -77,8 +97,20 @@ function updateDisplay(timerObject, seconds) {
 function convertSecondsToDisplayTime(seconds, includeSeconds) {
 
 // FIXME: output for 61 is '1:1', it should be '1:01'
-  var newDisplayTime = parseInt(seconds / 60).toString() + ':' +
-                    (seconds % 60).toString();
+  var newDisplayTime, minutes, seconds;
+
+  minutes = parseInt(seconds / 60).toString();
+  newDisplayTime = minutes;
+
+  if (includeSeconds) {
+    seconds = (seconds % 60).toString();
+
+    if (seconds < 10) {
+      seconds = '0' + seconds;
+    }
+
+    newDisplayTime += ':' + seconds;
+  }
 
   // returns minutes and seconds in a string
   return newDisplayTime;
@@ -92,6 +124,9 @@ var timer = {
   breakSetting: 300,
   currentSeconds: 0,
   currentIntervalID: null,
+  // states whether the timer is currently running or not in order to prevent
+  // other actions from taking place
+  timerRunning: false,
   // takes two parameters
   // timer specifies if it's the break or session timer
   // seconds is the number of seconds
@@ -101,7 +136,7 @@ var timer = {
 
   startTimer: function() {
     // main countdown clock
-    var countDownDisplay = document.getElementById('main-countdown-timer');
+    var mainCountDownDisplay = document.getElementById('main-countdown-timer');
 
     var timer = this.sessionSetting;
 
@@ -114,13 +149,13 @@ var timer = {
       // the view is only updated if the number of seconds has change since
       // the last time this method is called
       if (newTime !== prevTime) {
-        updateDisplay(countDownDisplay, newTime);
+        updateDisplay(mainCountDownDisplay, newTime, true);
       }
 
     prevTime = newTime;
 
-    }, 250);
 
+    }, 250);
 
     // setTimeout(function() {clearInterval(intervalID)}, 20000);
     this.currentIntervalID = intervalID;
