@@ -1,3 +1,11 @@
+/**
+
+TODO: incorporate current seconds, so the timer settings are independent from the clock
+TODO: give reset button functionality
+
+*/
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -28,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   sessionMinusButton.addEventListener('click', function() {
-    if (!timer.timerRunning) {
+    if (timer.timerRunning === false) {
       var sessionTimer = document.getElementById('session-time'),
           mainCountdownTimer = document.getElementById('main-countdown-timer');
 
@@ -42,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   sessionPlusButton.addEventListener('click', function() {
-    if (!timer.timerRunning) {
+    if (timer.timerRunning === false) {
       var sessionTimer = document.getElementById('session-time'),
           mainCountdownTimer = document.getElementById('main-countdown-timer');
 
@@ -54,8 +62,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   startButton.addEventListener('click', function() {
-    timer.startTimer();
-    timer.timerRunning = true;
+    if (timer.timerRunning === false) {
+      timer.startTimer();
+      timer.timerRunning = true;
+    }
 
   });
 
@@ -100,7 +110,6 @@ function updateDisplay(timerObject, seconds, includeSeconds) {
 
   timerObject.innerHTML = convertSecondsToDisplayTime(seconds, includeSeconds);
 
-
 }
 
 /*
@@ -135,7 +144,7 @@ var timer = {
   // all units of time are in seconds
   sessionSetting: 1500,
   breakSetting: 300,
-  currentSeconds: 0,
+  currentSeconds: 1000,
   currentIntervalID: null,
   // states whether the timer is currently running or not in order to prevent
   // other actions from taking place
@@ -151,7 +160,8 @@ var timer = {
     // main countdown clock
     var mainCountDownDisplay = document.getElementById('main-countdown-timer');
 
-    var timeSetting = this.sessionSetting;
+    // TODO: use currentSeconds instead of timer.sessionSetting
+    var timeSetting = this.currentSeconds;
 
     var timeStamp = new Date().getTime();
     var prevTime = 0;
@@ -159,7 +169,6 @@ var timer = {
       var diff = (new Date().getTime() - timeStamp) / 1000;
       var newTime = parseInt(timeSetting - diff);
       timer.sessionSetting = newTime;
-      console.log(timer.sessionSetting);
       // the view is only updated if the number of seconds has change since
       // the last time this method is called
       if (newTime !== prevTime) {
@@ -169,7 +178,7 @@ var timer = {
     prevTime = newTime;
 
 
-  }.bind(timer), 250);
+  }, 250);
 
     // setTimeout(function() {clearInterval(intervalID)}, 20000);
     this.currentIntervalID = intervalID;
