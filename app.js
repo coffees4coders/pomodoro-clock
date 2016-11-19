@@ -85,9 +85,6 @@ function displayAlert(breakOrSession) {
   } else {
 
   }
-
-
-
 }
 
 
@@ -154,14 +151,15 @@ var timer = {
     // main countdown clock
     var mainCountDownDisplay = document.getElementById('main-countdown-timer');
 
-    var timer = this.sessionSetting;
+    var timeSetting = this.sessionSetting;
 
     var timeStamp = new Date().getTime();
     var prevTime = 0;
     var intervalID = setInterval(function() {
       var diff = (new Date().getTime() - timeStamp) / 1000;
-      var newTime = parseInt(timer - diff);
-
+      var newTime = parseInt(timeSetting - diff);
+      timer.sessionSetting = newTime;
+      console.log(timer.sessionSetting);
       // the view is only updated if the number of seconds has change since
       // the last time this method is called
       if (newTime !== prevTime) {
@@ -171,7 +169,7 @@ var timer = {
     prevTime = newTime;
 
 
-    }, 250);
+  }.bind(timer), 250);
 
     // setTimeout(function() {clearInterval(intervalID)}, 20000);
     this.currentIntervalID = intervalID;
