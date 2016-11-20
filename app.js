@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (timer.breakSetting > 0) {
       timer.breakSetting -= 60;
+
+      // rounds down to the nearest minute
+      timer.breakSetting = parseInt(timer.breakSetting / 60) * 60;
       updateDisplay(breakTimer, timer.breakSetting);
     }
   });
@@ -31,8 +34,11 @@ document.addEventListener('DOMContentLoaded', function() {
   breakPlusButton.addEventListener('click', function() {
     var breakTimer = document.getElementById('break-time');
 
+    // add 60 seconds and round down to the nearest minute
     timer.breakSetting += 60;
+    timer.breakSetting = parseInt(timer.breakSetting / 60) * 60;
     updateDisplay(breakTimer, timer.breakSetting);
+
   });
 
   sessionMinusButton.addEventListener('click', function() {
@@ -42,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (timer.sessionSetting > 0) {
         timer.sessionSetting -= 60;
+        // rounds down to the nearest minute
+        timer.sessionSetting = parseInt(timer.sessionSetting / 60) * 60;
         updateDisplay(sessionTimer, timer.sessionSetting);
         updateDisplay(mainCountdownTimer, timer.sessionSetting, true);
 
@@ -52,9 +60,12 @@ document.addEventListener('DOMContentLoaded', function() {
   sessionPlusButton.addEventListener('click', function() {
     if (timer.timerRunning === false) {
       var sessionTimer = document.getElementById('session-time'),
-          mainCountdownTimer = document.getElementById('main-countdown-timer');
+          mainCountdownTimer = document.getElementById('main-countdown-timer'),
+          minutesRoundedDown;
 
+      // add 60 seconds and round down to the nearest minute
       timer.sessionSetting += 60;
+      timer.sessionSetting = parseInt(timer.sessionSetting / 60) * 60;
       updateDisplay(sessionTimer, timer.sessionSetting);
       updateDisplay(mainCountdownTimer, timer.sessionSetting, true);
     }
