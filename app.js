@@ -6,7 +6,6 @@ TODO: give reset button functionality
 */
 
 
-
 document.addEventListener('DOMContentLoaded', function() {
 
   // Add event listeners for all UI buttons
@@ -41,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     timer.breakSetting = parseInt(timer.breakSetting / 60) * 60;
     updateDisplay(breakTimer, timer.breakSetting);
 
-  
+
 
   });
 
@@ -168,7 +167,9 @@ var timer = {
   // all units of time are in seconds
   sessionSetting: 1500,
   breakSetting: 300,
+
   currentSeconds: 1500,
+
   currentIntervalID: null,
 
   // states whether the timer is currently running or not in order to prevent
@@ -190,6 +191,7 @@ var timer = {
     // main countdown clock
     var mainCountDownDisplay = document.getElementById('main-countdown-timer');
 
+
     if (timer.resetOnStart) {
        this.currentSeconds = this.sessionSetting;
     }
@@ -201,7 +203,7 @@ var timer = {
     var intervalID = setInterval(function() {
       var diff = (new Date().getTime() - timeStamp) / 1000;
       var newTime = parseInt(timeSetting - diff);
-      //timer.sessionSetting = newTime;
+
       // the view is only updated if the number of seconds has change since
       // the last time this method is called
       if (newTime !== prevTime) {
