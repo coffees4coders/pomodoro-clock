@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // rounds down to the nearest minute
       timer.breakSetting = parseInt(timer.breakSetting / 60) * 60;
       updateDisplay(breakTimer, timer.breakSetting);
+
+
     }
   });
 
@@ -38,6 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
     timer.breakSetting += 60;
     timer.breakSetting = parseInt(timer.breakSetting / 60) * 60;
     updateDisplay(breakTimer, timer.breakSetting);
+
+  
 
   });
 
@@ -52,6 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
         timer.sessionSetting = parseInt(timer.sessionSetting / 60) * 60;
         updateDisplay(sessionTimer, timer.sessionSetting);
         updateDisplay(mainCountdownTimer, timer.sessionSetting, true);
+
+        // ensures that after resetting session length,
+        // timer will restart at new lenght
+        timer.resetOnStart = true;
 
       }
     }
@@ -68,6 +76,11 @@ document.addEventListener('DOMContentLoaded', function() {
       timer.sessionSetting = parseInt(timer.sessionSetting / 60) * 60;
       updateDisplay(sessionTimer, timer.sessionSetting);
       updateDisplay(mainCountdownTimer, timer.sessionSetting, true);
+
+      // ensures that after resetting session length,
+      // timer will restart at new lenght
+      timer.resetOnStart = true;
+
     }
 
   });
@@ -155,12 +168,16 @@ var timer = {
   // all units of time are in seconds
   sessionSetting: 1500,
   breakSetting: 300,
-  currentSeconds: 0,
+  currentSeconds: 1500,
   currentIntervalID: null,
 
   // states whether the timer is currently running or not in order to prevent
   // other actions from taking place
   timerRunning: false,
+
+  // determines whether the countdown resets at the break or session length
+  // setting when pressing start.
+  resetOnStart: false,
 
   // takes two parameters
   // timer specifies if it's the break or session timer
@@ -173,7 +190,9 @@ var timer = {
     // main countdown clock
     var mainCountDownDisplay = document.getElementById('main-countdown-timer');
 
-    this.currentSeconds = this.sessionSetting;
+    if (timer.resetOnStart) {
+       this.currentSeconds = this.sessionSetting;
+    }
 
     var timeSetting = this.currentSeconds;
 
@@ -197,6 +216,7 @@ var timer = {
 
     // setTimeout(function() {clearInterval(intervalID)}, 20000);
     this.currentIntervalID = intervalID;
+    this.resetOnStart = false;
   },
 
   stopTimer: function() {
