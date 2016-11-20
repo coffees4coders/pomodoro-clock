@@ -172,6 +172,7 @@ var timer = {
       // the view is only updated if the number of seconds has change since
       // the last time this method is called
       if (newTime !== prevTime) {
+        timer.currentSeconds--;
         updateDisplay(mainCountDownDisplay, newTime, true);
       }
 
