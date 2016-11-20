@@ -1,6 +1,6 @@
 /**
 
-TODO: incorporate current seconds, so the timer settings are independent from the clock
+
 TODO: give reset button functionality
 
 */
@@ -155,11 +155,13 @@ var timer = {
   // all units of time are in seconds
   sessionSetting: 1500,
   breakSetting: 300,
-  currentSeconds: 1000,
+  currentSeconds: 0,
   currentIntervalID: null,
+
   // states whether the timer is currently running or not in order to prevent
   // other actions from taking place
   timerRunning: false,
+
   // takes two parameters
   // timer specifies if it's the break or session timer
   // seconds is the number of seconds
@@ -171,7 +173,8 @@ var timer = {
     // main countdown clock
     var mainCountDownDisplay = document.getElementById('main-countdown-timer');
 
-    // TODO: use currentSeconds instead of timer.sessionSetting
+    this.currentSeconds = this.sessionSetting;
+
     var timeSetting = this.currentSeconds;
 
     var timeStamp = new Date().getTime();
@@ -179,7 +182,7 @@ var timer = {
     var intervalID = setInterval(function() {
       var diff = (new Date().getTime() - timeStamp) / 1000;
       var newTime = parseInt(timeSetting - diff);
-      timer.sessionSetting = newTime;
+      //timer.sessionSetting = newTime;
       // the view is only updated if the number of seconds has change since
       // the last time this method is called
       if (newTime !== prevTime) {
