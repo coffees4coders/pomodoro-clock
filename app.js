@@ -4,6 +4,10 @@ TODO: change session to focus
 TODO: give reset button functionality
 
 NOTE: Break timer object into two timers, Focus and Break
+
+CSS: for making circle sections:
+http://jsfiddle.net/jonathansampson/7PtEm/
+http://stackoverflow.com/questions/21205652/how-to-draw-a-circle-sector-in-css
 */
 
 

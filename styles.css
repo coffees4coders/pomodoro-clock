@@ -60,7 +60,8 @@ table {
 
 /*** END CSS RESET ***/
 
-.time-selector {
+body {
+	background-color: gray;
 }
 
 .control-button-container {
@@ -91,4 +92,13 @@ h3 {
 
 .show {
 	display: block;
+}
+
+.counter {
+	margin: 0 auto 0 auto;
+	width: 250px;
+	height: 250px;
+	border: 10px solid #fff;
+	border-radius: 50%;
+
 }
