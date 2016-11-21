@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
   breakMinusButton.addEventListener('click', function() {
     var breakTimer = document.getElementById('break-time');
 
-    if (timer.breakSetting > 0) {
+    if (timer.breakSetting > 60) {
       timer.breakSetting -= 60;
 
       // rounds down to the nearest minute
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var sessionTimer = document.getElementById('session-time'),
           mainCountdownTimer = document.getElementById('main-countdown-timer');
 
-      if (timer.sessionSetting > 0) {
+      if (timer.sessionSetting > 60) {
         timer.sessionSetting -= 60;
         // rounds down to the nearest minute
         timer.sessionSetting = parseInt(timer.sessionSetting / 60) * 60;
