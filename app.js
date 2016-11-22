@@ -1,4 +1,4 @@
-/**
+/** NOTES
 
 TODO: change session to focus
 TODO: give reset button functionality
@@ -106,6 +106,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+
+// TODO: write drawTimerOutline()
+
+/**
+  * this function will take a percentage of the countdown remaining
+  * and will color the same percent of the clock outline
+  */
+function drawTimerOutline(currentSeconds, totalSeconds) {
+  var clock = document.getElementById('counter');
+  var percent = currentSeconds / totalSeconds;
+
+  if ( percent < .5) {
+    degrees = (percent * 180 / .5) + 90;
+
+    clock.style.backgroundImage = `linear-gradient(${degrees}deg, transparent 50%, #dd5fdd 50%), linear-gradient(90deg, #dd5fdd 50%, transparent 50%)`;
+
+  }
+
+  else if ( percent === .5) {
+    clock.style.backgroundImage = 'linear-gradient(90deg, #dd5fdd 50%, transparent 50%)';
+    }
+
+  else {
+    percent = percent - .5;
+    degrees = (percent * 180 / .5) + 90
+
+    clock.style.backgroundImage = `linear-gradient(${degrees}deg, transparent 50%, gray 50%), linear-gradient(90deg, #dd5fdd 50%, transparent 50%)`;
+  }
+}
 
 
 function addClass(elem, style) {
