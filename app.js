@@ -1,9 +1,7 @@
 /** NOTES
 
-TODO: change focus to focus
 TODO: give reset button functionality
-
-NOTE: Break timer object into two timers, Focus and Break
+TODO: fix start and stop buttons
 
 CSS: for making circle sections:
 http://jsfiddle.net/jonathansampson/7PtEm/
@@ -98,8 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   startButton.addEventListener('click', function() {
-    if (timer.timerRunning === false) {
-      timer.startTimer('focus');
+    // determine which timer is currently the active timer
+    // only the active timer will be started
+    var activeTimer = determineActiveTimer();
+
+    if (activeTimer.timerRunning === false) {
+      activeTimer.startTimer();
     }
 
   });
@@ -116,6 +118,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+/**
+  * find out which timer is the active timer
+  * returns the active timer
+  */
+function determineActiveTimer() {
+  var activeTimer;
+  // TODO: use error handling if both timers are active
+  if (focusTimer.isActive) {
+    activeTimer = focusTimer;
+  } else {
+    activeTimer = breakTimer;
+  }
+
+  return activeTimer;
+}
 
 /**
   * this function will determine whether the breakTimer or the focusTimer
@@ -153,7 +170,6 @@ function drawTimerOutline(currentSeconds, totalSeconds) {
     clock.style.backgroundImage = `linear-gradient(${degrees}deg, transparent 50%, gray 50%), linear-gradient(90deg, #dd5fdd 50%, transparent 50%)`;
   }
 }
-
 
 function addClass(elem, style) {
 
@@ -322,5 +338,13 @@ function Timer(timeSetting, elemId) {
 
 }
 
+/**
+  * create 2 timer objects
+  * isActive property determines which timer
+  * is the actively running timer
+  */
 var focusTimer = new Timer(1500, 'focus-timer');
+focusTimer.isActive = true;
+
 var breakTimer = new Timer(300, 'break-timer');
+breakTimer.isActive = false;
