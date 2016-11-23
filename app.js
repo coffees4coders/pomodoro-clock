@@ -107,8 +107,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   stopButton.addEventListener('click', function() {
-    timer.stopTimer();
-    timer.timerRunning = false;
+    var activeTimer = determineActiveTimer();
+
+    activeTimer.stopTimer();
+    activeTimer.timerRunning = false;
 
   });
 
