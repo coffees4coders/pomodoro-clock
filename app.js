@@ -127,13 +127,26 @@ document.addEventListener('DOMContentLoaded', function() {
 function determineActiveTimer() {
   var activeTimer;
   // TODO: use error handling if both timers are active
-  if (focusTimer.isActive) {
-    activeTimer = focusTimer;
-  } else {
-    activeTimer = breakTimer;
+
+  // Makes sure that only one timer is currently active
+
+  try {
+    if (focusTimer.isActive && breakTimer.isActive) {
+      throw "can't have two active timers";
+    }
+
+    if (focusTimer.isActive) {
+      activeTimer = focusTimer;
+    } else {
+      activeTimer = breakTimer;
+    }
+
+    return activeTimer;
   }
 
-  return activeTimer;
+  catch(err) {
+    console.log('Error: ' + err);
+  }
 }
 
 /**
