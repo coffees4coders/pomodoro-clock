@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
       breakTimer.timeSetting = parseInt(breakTimer.timeSetting / 60) * 60;
       updateDisplay(breakTimeDial, breakTimer.timeSetting);
 
+
+      breakTimer.resetOnStart = true;
+      
       // TEMP
       updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
 
@@ -45,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
     breakTimer.timeSetting += 60;
     breakTimer.timeSetting = parseInt(breakTimer.timeSetting / 60) * 60;
     updateDisplay(breakTimeDial, breakTimer.timeSetting);
+
+    breakTimer.resetOnStart = true;
 
     // TEMP
     updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
