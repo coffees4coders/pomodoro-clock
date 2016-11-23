@@ -24,64 +24,74 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   breakMinusButton.addEventListener('click', function() {
-    var breakTimer = document.getElementById('break-time');
+    var breakTimeDial = document.getElementById('break-time-dial');
 
-    if (timer.breakSetting > 60) {
-      timer.breakSetting -= 60;
+    if (breakTimer.timeSetting > 60) {
+      breakTimer.timeSetting -= 60;
 
       // rounds down to the nearest minute
-      timer.breakSetting = parseInt(timer.breakSetting / 60) * 60;
-      updateDisplay(breakTimer, timer.breakSetting);
+      breakTimer.timeSetting = parseInt(breakTimer.timeSetting / 60) * 60;
+      updateDisplay(breakTimeDial, breakTimer.timeSetting);
+
+      // TEMP
+      updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
 
 
     }
   });
 
   breakPlusButton.addEventListener('click', function() {
-    var breakTimer = document.getElementById('break-time');
+    var breakTimeDial = document.getElementById('break-time-dial');
 
     // add 60 seconds and round down to the nearest minute
-    timer.breakSetting += 60;
-    timer.breakSetting = parseInt(timer.breakSetting / 60) * 60;
-    updateDisplay(breakTimer, timer.breakSetting);
+    breakTimer.timeSetting += 60;
+    breakTimer.timeSetting = parseInt(breakTimer.timeSetting / 60) * 60;
+    updateDisplay(breakTimeDial, breakTimer.timeSetting);
+
+    // TEMP
+    updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
 
   });
 
   focusMinusButton.addEventListener('click', function() {
-    if (timer.timerRunning === false) {
-      var focusTimer = document.getElementById('focus-time'),
-          mainCountdownTimer = document.getElementById('focus-timer');
+    if (focusTimer.timerRunning === false) {
+      var focusTimeDial = document.getElementById('focus-time-dial');
 
-      if (timer.focusSetting > 60) {
-        timer.focusSetting -= 60;
+      if (focusTimer.timeSetting > 60) {
+        focusTimer.timeSetting -= 60;
+
         // rounds down to the nearest minute
-        timer.focusSetting = parseInt(timer.focusSetting / 60) * 60;
-        updateDisplay(focusTimer, timer.focusSetting);
-        updateDisplay(mainCountdownTimer, timer.focusSetting, true);
+        focusTimer.timeSetting = parseInt(focusTimer.timeSetting / 60) * 60;
+        updateDisplay(focusTimeDial, focusTimer.timeSetting);
 
-        // ensures that after resetting focus length,
-        // timer will restart at new lenght
-        timer.resetOnStart = true;
+        // TEMP
+        updateDisplay(document.getElementById('focus-timer'), focusTimer.timeSetting, true);
+
+        /**
+          * ensures that after resetting focus length, timer will
+          * restart at new length
+          */
+        focusTimer.resetOnStart = true;
 
       }
     }
   });
 
   focusPlusButton.addEventListener('click', function() {
-    if (timer.timerRunning === false) {
-      var focusTimer = document.getElementById('focus-time'),
-          mainCountdownTimer = document.getElementById('focus-timer'),
-          minutesRoundedDown;
+    if (focusTimer.timerRunning === false) {
+      var focusTimeDial = document.getElementById('focus-time-dial');
 
       // add 60 seconds and round down to the nearest minute
-      timer.focusSetting += 60;
-      timer.focusSetting = parseInt(timer.focusSetting / 60) * 60;
-      updateDisplay(focusTimer, timer.focusSetting);
-      updateDisplay(mainCountdownTimer, timer.focusSetting, true);
+      focusTimer.timeSetting += 60;
+      focusTimer.timeSetting = parseInt(focusTimer.timeSetting / 60) * 60;
+      updateDisplay(focusTimeDial, focusTimer.timeSetting);
+
+      // TEMP
+      updateDisplay(document.getElementById('focus-timer'), focusTimer.timeSetting, true);
 
       // ensures that after resetting focus length,
       // timer will restart at new lenght
-      timer.resetOnStart = true;
+      focusTimer.resetOnStart = true;
 
     }
 
@@ -107,7 +117,15 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// TODO: write drawTimerOutline()
+/**
+  * this function will determine whether the breakTimer or the focusTimer
+  * is currently the active timer and is the one displayed in the main
+  * countdown.
+  * timer argument determines which timer to switch to
+  */
+function switchTimer(timer) {
+
+}
 
 /**
   * this function will take a percentage of the countdown remaining
@@ -238,45 +256,35 @@ function convertSecondsToDisplayTime(seconds, includeSeconds) {
 
 
 // break this up into two objects to handle break and focus timers, maybe
-var timer = {
+function Timer(timeSetting, elemId) {
   // all units of time are in seconds
-  focusSetting: 1500,
-  breakSetting: 300,
+  this.timeSetting = timeSetting;
+  this.elemId = elemId;
+  this.currentSeconds = timeSetting;
 
-  currentSeconds: 1500,
-
-  currentIntervalID: null,
+  this.currentIntervalID = null;
 
   // states whether the timer is currently running or not in order to prevent
   // other actions from taking place
-  timerRunning: false,
+  this.timerRunning = false;
 
   // determines whether the countdown resets at the break or focus length
   // setting when pressing start.
-  resetOnStart: false,
+  this.resetOnStart = false;
 
-  // takes two parameters
-  // timer specifies if it's the break or focus timer
-  // seconds is the number of seconds
-  updateTimer: function(timer, seconds) {
-    // countDownDisplay.innerHTML = convertSecondsToDisplayTime(seconds);
-  },
+
 
   // begins timer, arguemnt determines whether the timer begins from the
   // focus or break setting. Takes a string: 'break' or 'focus'
-  startTimer: function(focusOrBreak) {
+  this.startTimer = function() {
     // main countdown clock
-    var mainCountDownDisplay = document.getElementById('focus-timer');
-
+    var mainCountDownDisplay = document.getElementById(elemId);
+    var self = this;
     this.timerRunning = true;
 
+    if (this.resetOnStart) {
+        this.currentSeconds = this.timeSetting;
 
-    if (timer.resetOnStart) {
-      if (focusOrBreak === 'focus') {
-        this.currentSeconds = this.focusSetting;
-    } else {
-        this.currentSeconds = this.breakSetting;
-      }
     }
 
     var timeSetting = this.currentSeconds;
@@ -290,14 +298,14 @@ var timer = {
       // the view is only updated if the number of seconds has change since
       // the last time this method is called
       if (newTime !== prevTime) {
-        timer.currentSeconds--;
+        self.currentSeconds--;
         updateDisplay(mainCountDownDisplay, newTime, true);
       }
 
     prevTime = newTime;
 
-    if (timer.currentSeconds === 0) {
-      timer.stopTimer();
+    if (self.currentSeconds === 0) {
+      self.stopTimer();
       timerFinished('focus');
     }
 
@@ -306,10 +314,13 @@ var timer = {
     // setTimeout(function() {clearInterval(intervalID)}, 20000);
     this.currentIntervalID = intervalID;
     this.resetOnStart = false;
-  },
+  };
 
-  stopTimer: function() {
+  this.stopTimer = function() {
     clearInterval(this.currentIntervalID);
-  }
+  };
 
-};
+}
+
+var focusTimer = new Timer(1500, 'focus-timer');
+var breakTimer = new Timer(300, 'break-timer');
