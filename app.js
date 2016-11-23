@@ -126,10 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
   */
 function determineActiveTimer() {
   var activeTimer;
-  // TODO: use error handling if both timers are active
 
   // Makes sure that only one timer is currently active
-
   try {
     if (focusTimer.isActive && breakTimer.isActive) {
       throw "can't have two active timers";
@@ -302,36 +300,39 @@ function Timer(timeSetting, elemId) {
   // determines whether the countdown resets at the break or focus length
   // setting when pressing start.
   this.resetOnStart = false;
+}
+// prototype methods
 
 
+/**
+  * begins timer, arguemnt determines whether the timer begins from the
+  * focus or break setting. Takes a string: 'break' or 'focus'
+  */
+Timer.prototype.startTimer = function() {
+  // main countdown clock
+  var mainCountDownDisplay = document.getElementById(this.elemId);
+  var self = this;
+  this.timerRunning = true;
 
-  // begins timer, arguemnt determines whether the timer begins from the
-  // focus or break setting. Takes a string: 'break' or 'focus'
-  this.startTimer = function() {
-    // main countdown clock
-    var mainCountDownDisplay = document.getElementById(elemId);
-    var self = this;
-    this.timerRunning = true;
+  if (this.resetOnStart) {
+      this.currentSeconds = this.timeSetting;
 
-    if (this.resetOnStart) {
-        this.currentSeconds = this.timeSetting;
+  }
 
+  var timeSetting = this.currentSeconds;
+
+  var timeStamp = new Date().getTime();
+  var prevTime = 0;
+  var intervalID = setInterval(function() {
+    var diff = (new Date().getTime() - timeStamp) / 1000;
+    var newTime = parseInt(timeSetting - diff);
+
+    // the view is only updated if the number of seconds has change since
+    // the last time this method is called
+    if (newTime !== prevTime) {
+      self.currentSeconds--;
+      updateDisplay(mainCountDownDisplay, newTime, true);
     }
-
-    var timeSetting = this.currentSeconds;
-
-    var timeStamp = new Date().getTime();
-    var prevTime = 0;
-    var intervalID = setInterval(function() {
-      var diff = (new Date().getTime() - timeStamp) / 1000;
-      var newTime = parseInt(timeSetting - diff);
-
-      // the view is only updated if the number of seconds has change since
-      // the last time this method is called
-      if (newTime !== prevTime) {
-        self.currentSeconds--;
-        updateDisplay(mainCountDownDisplay, newTime, true);
-      }
 
     prevTime = newTime;
 
@@ -342,16 +343,14 @@ function Timer(timeSetting, elemId) {
 
   }, 250);
 
-    // setTimeout(function() {clearInterval(intervalID)}, 20000);
-    this.currentIntervalID = intervalID;
-    this.resetOnStart = false;
-  };
+  // setTimeout(function() {clearInterval(intervalID)}, 20000);
+  this.currentIntervalID = intervalID;
+  this.resetOnStart = false;
+};
 
-  this.stopTimer = function() {
+Timer.prototype.stopTimer = function() {
     clearInterval(this.currentIntervalID);
   };
-
-}
 
 /**
   * create 2 timer objects
