@@ -148,13 +148,24 @@ function determineActiveTimer() {
 }
 
 /**
-  * this function will determine whether the breakTimer or the focusTimer
-  * is currently the active timer and is the one displayed in the main
-  * countdown.
-  * timer argument determines which timer to switch to
+  * this function toggles which timer is the currently active timer
+  * returns now active timer
   */
-function switchTimer(timer) {
+function toggleTimer() {
+  var currentActiveTimer = determineActiveTimer();
+  var newActiveTimer;
 
+  currentActiveTimer.isActive = false;
+
+  if (currentActiveTimer.id === 'focus') {
+    breakTimer.isActive = true;
+    newActiveTimer = breakTimer;
+  } else {
+    focusTimer.isActive = true;
+    newActiveTimer = focusTimer;
+  }
+
+  return newActiveTimer;
 }
 
 /**
@@ -251,9 +262,11 @@ function alertButtonClick() {
   Returns a string
 */
 function updateDisplay(timerObject, seconds, includeSeconds) {
+  var displayTime = convertSecondsToDisplayTime(seconds, includeSeconds);
+  var mainTimerDisplay = document.getElementById('main-timer-display');
 
-
-  timerObject.innerHTML = convertSecondsToDisplayTime(seconds, includeSeconds);
+  timerObject.innerHTML = displayTime;
+  mainTimerDisplay.innerHTML = displayTime;
 
 }
 
@@ -358,7 +371,9 @@ Timer.prototype.stopTimer = function() {
   * is the actively running timer
   */
 var focusTimer = new Timer(1500, 'focus-timer');
+focusTimer.id = 'focus';
 focusTimer.isActive = true;
 
 var breakTimer = new Timer(300, 'break-timer');
+breakTimer.id = 'break';
 breakTimer.isActive = false;
