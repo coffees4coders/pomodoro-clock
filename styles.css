@@ -94,13 +94,33 @@ h3 {
 	display: block;
 }
 
+
+.outer-circle {
+	width: 300px;
+	height: 300px;
+	position: relative;
+	border-radius: 50%;
+
+	background-image: linear-gradient(90deg, transparent 50%, #dd5fdd 50%),
+										linear-gradient(90deg, #dd5fdd 50%, transparent 50%);
+}
+
 .counter {
-	margin: 0 auto 0 auto;
 	width: 250px;
 	height: 250px;
 	border-radius: 50%;
-	/*border: 3px solid white;*/
-	background-image: linear-gradient(90deg, transparent 50%, #dd5fdd 50%),
-										linear-gradient(90deg, #dd5fdd 50%, transparent 50%);
+	background-color: #000;
+	color: #fff;
+	font-family: 'Orbitron', sans-serif;
+	font-size: 3em;
+	text-align: center;
+	line-height: 250px;
+	position: absolute;
 
+	/**
+		* Center inner div using this formula
+		* outerWidth - innerWidth / 2 = left
+		*/
+	left: 25px;
+	top: 25px;
 }

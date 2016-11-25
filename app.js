@@ -1,7 +1,8 @@
 /** NOTES
 
+BUG: starting timer after break ends doesn't work
+
 TODO: give reset button functionality
-TODO: fix start and stop buttons
 
 CSS: for making circle sections:
 http://jsfiddle.net/jonathansampson/7PtEm/
@@ -22,38 +23,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   breakMinusButton.addEventListener('click', function() {
-    var breakTimeDial = document.getElementById('break-time-dial');
+    if (breakTimer.timerRunning === false) {
 
-    if (breakTimer.timeSetting > 60) {
-      breakTimer.timeSetting -= 60;
+      var breakTimeDial = document.getElementById('break-time-dial');
 
-      // rounds down to the nearest minute
-      breakTimer.timeSetting = parseInt(breakTimer.timeSetting / 60) * 60;
-      updateDisplay(breakTimeDial, breakTimer.timeSetting);
+      if (breakTimer.timeSetting > 60) {
+        breakTimer.timeSetting -= 60;
 
-
-      breakTimer.resetOnStart = true;
-      
-      // TEMP
-      updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
+        // rounds down to the nearest minute
+        breakTimer.timeSetting = parseInt(breakTimer.timeSetting / 60) * 60;
+        updateDisplay(breakTimeDial, breakTimer.timeSetting);
 
 
+        breakTimer.resetOnStart = true;
+
+        // TEMP
+        updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
+      }
     }
   });
 
   breakPlusButton.addEventListener('click', function() {
-    var breakTimeDial = document.getElementById('break-time-dial');
+    if (breakTimer.timerRunning === false) {
+      var breakTimeDial = document.getElementById('break-time-dial');
 
-    // add 60 seconds and round down to the nearest minute
-    breakTimer.timeSetting += 60;
-    breakTimer.timeSetting = parseInt(breakTimer.timeSetting / 60) * 60;
-    updateDisplay(breakTimeDial, breakTimer.timeSetting);
+      // add 60 seconds and round down to the nearest minute
+      breakTimer.timeSetting += 60;
+      breakTimer.timeSetting = parseInt(breakTimer.timeSetting / 60) * 60;
+      updateDisplay(breakTimeDial, breakTimer.timeSetting);
 
-    breakTimer.resetOnStart = true;
+      breakTimer.resetOnStart = true;
 
-    // TEMP
-    updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
-
+      // TEMP
+      updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
+    }
   });
 
   focusMinusButton.addEventListener('click', function() {
@@ -157,12 +160,12 @@ function determineActiveTimer() {
   * returns now active timer
   */
 function toggleTimer() {
-  var currentActiveTimer = determineActiveTimer();
+  var activeTimer = determineActiveTimer();
   var newActiveTimer;
 
-  currentActiveTimer.isActive = false;
+  activeTimer.isActive = false;
 
-  if (currentActiveTimer.id === 'focus') {
+  if (activeTimer.id === 'focus') {
     breakTimer.isActive = true;
     newActiveTimer = breakTimer;
   } else {
@@ -178,8 +181,11 @@ function toggleTimer() {
   * and will color the same percent of the clock outline
   */
 function drawTimerOutline(currentSeconds, totalSeconds) {
-  var clock = document.getElementById('counter');
-  var percent = currentSeconds / totalSeconds;
+  console.log(currentSeconds, totalSeconds);
+  var clock = document.getElementById('outer-circle-clock');
+  var activeTimer = determineActiveTimer();
+
+  var percent = (totalSeconds - currentSeconds) / totalSeconds;
 
   if ( percent < .5) {
     degrees = (percent * 180 / .5) + 90;
@@ -188,7 +194,7 @@ function drawTimerOutline(currentSeconds, totalSeconds) {
 
   }
 
-  else if ( percent === .5) {
+  else if (percent === .5) {
     clock.style.backgroundImage = 'linear-gradient(90deg, #dd5fdd 50%, transparent 50%)';
     }
 
@@ -219,27 +225,29 @@ function removeClass(elem, style) {
    This function is called whenever a focus or break focus ends
    Takes string as parameter: focus or break, depending on which is ending
 */
-function timerFinished(breakOrfocus) {
+function timerFinished() {
   var alertDiv = document.getElementById('alert-box'),
       alertText = document.getElementById('alert-text'),
       alertButton = document.getElementById('alert-button'),
       alertButtonText = document.getElementById('break-or-focus-text');
 
-  timer.resetOnStart = true;
+  // timer.resetOnStart = true;
+  toggleTimer();
+  var activeTimer = determineActiveTimer();
 
   addClass(alertDiv, 'show');
 
-  if (breakOrfocus === 'break') {
+  if (activeTimer.id === 'break') {
     alertButton.addEventListener('click', function() {
-      timer.startTimer('focus');
+      breakTimer.startTimer();
       removeClass(alertDiv, 'show');
     });
 
-
     alertButtonText.innerHTML = 'Focus focus';
+
   } else {
     alertButton.addEventListener('click', function() {
-      timer.startTimer('break');
+      focusTimer.startTimer();
       removeClass(alertDiv, 'show');
 
     });
@@ -272,6 +280,7 @@ function updateDisplay(timerObject, seconds, includeSeconds) {
 
   timerObject.innerHTML = displayTime;
   mainTimerDisplay.innerHTML = displayTime;
+
 
 }
 
@@ -330,14 +339,14 @@ Timer.prototype.startTimer = function() {
   // main countdown clock
   var mainCountDownDisplay = document.getElementById(this.elemId);
   var self = this;
-  this.timerRunning = true;
+  self.timerRunning = true;
 
-  if (this.resetOnStart) {
-      this.currentSeconds = this.timeSetting;
+  if (self.resetOnStart) {
+      self.currentSeconds = self.timeSetting;
 
   }
 
-  var timeSetting = this.currentSeconds;
+  var timeSetting = self.currentSeconds;
 
   var timeStamp = new Date().getTime();
   var prevTime = 0;
@@ -350,20 +359,21 @@ Timer.prototype.startTimer = function() {
     if (newTime !== prevTime) {
       self.currentSeconds--;
       updateDisplay(mainCountDownDisplay, newTime, true);
+      drawTimerOutline(newTime, self.timeSetting);
     }
 
     prevTime = newTime;
 
     if (self.currentSeconds === 0) {
       self.stopTimer();
-      timerFinished('focus');
+      timerFinished();
     }
 
   }, 250);
 
   // setTimeout(function() {clearInterval(intervalID)}, 20000);
-  this.currentIntervalID = intervalID;
-  this.resetOnStart = false;
+  self.currentIntervalID = intervalID;
+  self.resetOnStart = false;
 };
 
 Timer.prototype.stopTimer = function() {
