@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
       focusPlusButton = document.getElementById('focus-plus'),
       startButton = document.getElementById('start-button'),
       stopButton = document.getElementById('stop-button'),
-      resetButton = document.getElementById('reset-button');
+      resetButton = document.getElementById('reset-button'),
+      mainCountDownDisplay = document.getElementById('main-timer-display');
 
 
   breakMinusButton.addEventListener('click', function() {
@@ -38,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         breakTimer.resetOnStart = true;
 
         // TEMP
-        updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
+    //    updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
       }
     }
   });
@@ -55,13 +56,14 @@ document.addEventListener('DOMContentLoaded', function() {
       breakTimer.resetOnStart = true;
 
       // TEMP
-      updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
+    //  updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
     }
   });
 
   focusMinusButton.addEventListener('click', function() {
     if (focusTimer.timerRunning === false) {
       var focusTimeDial = document.getElementById('focus-time-dial');
+      var mainCountDownDisplay = document.getElementById('main-timer-display');
 
       if (focusTimer.timeSetting > 60) {
         focusTimer.timeSetting -= 60;
@@ -69,9 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // rounds down to the nearest minute
         focusTimer.timeSetting = parseInt(focusTimer.timeSetting / 60) * 60;
         updateDisplay(focusTimeDial, focusTimer.timeSetting);
-
-        // TEMP
-        updateDisplay(document.getElementById('focus-timer'), focusTimer.timeSetting, true);
+        updateDisplay(mainCountDownDisplay, focusTimer.timeSetting, true);
 
         /**
           * ensures that after resetting focus length, timer will
@@ -86,14 +86,13 @@ document.addEventListener('DOMContentLoaded', function() {
   focusPlusButton.addEventListener('click', function() {
     if (focusTimer.timerRunning === false) {
       var focusTimeDial = document.getElementById('focus-time-dial');
+      var mainCountDownDisplay = document.getElementById('main-timer-display');
 
       // add 60 seconds and round down to the nearest minute
       focusTimer.timeSetting += 60;
       focusTimer.timeSetting = parseInt(focusTimer.timeSetting / 60) * 60;
       updateDisplay(focusTimeDial, focusTimer.timeSetting);
-
-      // TEMP
-      updateDisplay(document.getElementById('focus-timer'), focusTimer.timeSetting, true);
+      updateDisplay(mainCountDownDisplay, focusTimer.timeSetting, true);
 
       // ensures that after resetting focus length,
       // timer will restart at new lenght
@@ -127,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // inserts time into clock UI when page loads
-  updateDisplay(determineActiveTimer(), determineActiveTimer().timeSetting, true);
+  updateDisplay(mainCountDownDisplay, determineActiveTimer().timeSetting, true);
 });
 
 /**
@@ -241,7 +240,7 @@ function timerFinished() {
       removeClass(alertDiv, 'show');
     });
 
-    alertButtonText.innerHTML = 'Focus focus';
+    alertButtonText.innerHTML = 'break';
 
   } else {
     alertButton.addEventListener('click', function() {
@@ -249,7 +248,7 @@ function timerFinished() {
       removeClass(alertDiv, 'show');
 
     });
-    alertButtonText.innerHTML = 'Break';
+    alertButtonText.innerHTML = 'focus session';
   }
 }
 
@@ -276,9 +275,7 @@ function updateDisplay(timerObject, seconds, includeSeconds) {
   var mainTimerDisplay = document.getElementById('main-timer-display');
 
   timerObject.innerHTML = displayTime;
-  mainTimerDisplay.innerHTML = displayTime;
-
-
+//  mainTimerDisplay.innerHTML = displayTime;
 }
 
 /*
@@ -334,7 +331,7 @@ function Timer(timeSetting, elemId) {
   */
 Timer.prototype.startTimer = function() {
   // main countdown clock
-  var mainCountDownDisplay = document.getElementById(this.elemId);
+  var mainCountDownDisplay = document.getElementById('main-timer-display');
   var self = this;
   self.timerRunning = true;
 
