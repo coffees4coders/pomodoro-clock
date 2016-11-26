@@ -126,6 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // add code
   });
 
+  // inserts time into clock UI when page loads
+  updateDisplay(determineActiveTimer(), determineActiveTimer().timeSetting, true);
 });
 
 /**
@@ -207,10 +209,7 @@ function drawTimerOutline(currentSeconds, totalSeconds) {
 }
 
 function addClass(elem, style) {
-
-
   elem.className += ' ' + style;
-
 }
 
 function removeClass(elem, style) {
@@ -218,7 +217,6 @@ function removeClass(elem, style) {
   var startIndex = elemClassList.indexOf(' ' + style);
   var revertedClassList = elemClassList.slice(0, startIndex);
   elem.className = revertedClassList;
-
 }
 
 /**
@@ -255,15 +253,14 @@ function timerFinished() {
   }
 }
 
+// TODO: work on this function
 function alertButtonClick() {
   // takes the string from the alert button, which would be 'break' or 'focus'
   // depending on what part of the cycle it is in
   var focusOrBreak = document.getElementById('break-or-focus-text').toLowerCase();
 
   if (focusOrBreak === 'break') {
-
   }
-
 }
 
 
