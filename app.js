@@ -38,8 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         breakTimer.resetOnStart = true;
 
-        // TEMP
-    //    updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
       }
     }
   });
@@ -55,8 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
       breakTimer.resetOnStart = true;
 
-      // TEMP
-    //  updateDisplay(document.getElementById('break-timer'), breakTimer.timeSetting, true);
     }
   });
 
@@ -166,7 +162,7 @@ function toggleTimer() {
 
   activeTimer.isActive = false;
 
-  if (activeTimer.id === 'focus') {
+  if (activeTimer.id === 'focus session') {
     breakTimer.isActive = true;
     newActiveTimer = breakTimer;
   } else {
@@ -182,7 +178,6 @@ function toggleTimer() {
   * and will color the same percent of the clock outline
   */
 function drawTimerOutline(currentSeconds, totalSeconds) {
-  console.log(currentSeconds, totalSeconds);
   var clock = document.getElementById('outer-circle-clock');
   var activeTimer = determineActiveTimer();
 
@@ -223,45 +218,22 @@ function removeClass(elem, style) {
    Takes string as parameter: focus or break, depending on which is ending
 */
 function timerFinished() {
-  var alertDiv = document.getElementById('alert-box'),
-      alertText = document.getElementById('alert-text'),
-      alertButton = document.getElementById('alert-button'),
-      alertButtonText = document.getElementById('break-or-focus-text');
+  var mainCountDownDisplay = document.getElementById('main-timer-display');
 
-  // timer.resetOnStart = true;
   toggleTimer();
   var activeTimer = determineActiveTimer();
+  mainCountDownDisplay.style.fontSize = '1em';
+  mainCountDownDisplay.innerHTML = 'Click to begin ' + activeTimer.id;
 
-  addClass(alertDiv, 'show');
+  var clickFunc = function() {
+    mainCountDownDisplay.innerHTML = null;
+    mainCountDownDisplay.style.fontSize = null;
+    mainCountDownDisplay.removeEventListener('click', clickFunc);
+    activeTimer.startTimer();
+  };
+  mainCountDownDisplay.addEventListener('click', clickFunc);
 
-  if (activeTimer.id === 'break') {
-    alertButton.addEventListener('click', function() {
-      breakTimer.startTimer();
-      removeClass(alertDiv, 'show');
-    });
-
-    alertButtonText.innerHTML = 'break';
-
-  } else {
-    alertButton.addEventListener('click', function() {
-      focusTimer.startTimer();
-      removeClass(alertDiv, 'show');
-
-    });
-    alertButtonText.innerHTML = 'focus session';
-  }
 }
-
-// TODO: work on this function
-function alertButtonClick() {
-  // takes the string from the alert button, which would be 'break' or 'focus'
-  // depending on what part of the cycle it is in
-  var focusOrBreak = document.getElementById('break-or-focus-text').toLowerCase();
-
-  if (focusOrBreak === 'break') {
-  }
-}
-
 
 /*
   Parameters:
@@ -306,10 +278,9 @@ function convertSecondsToDisplayTime(seconds, includeSeconds) {
 
 
 // break this up into two objects to handle break and focus timers, maybe
-function Timer(timeSetting, elemId) {
+function Timer(timeSetting) {
   // all units of time are in seconds
   this.timeSetting = timeSetting;
-  this.elemId = elemId;
   this.currentSeconds = timeSetting;
 
   this.currentIntervalID = null;
@@ -379,10 +350,17 @@ Timer.prototype.stopTimer = function() {
   * isActive property determines which timer
   * is the actively running timer
   */
-var focusTimer = new Timer(1500, 'focus-timer');
-focusTimer.id = 'focus';
+var focusTimer = new Timer(1500);
+focusTimer.id = 'focus session';
 focusTimer.isActive = true;
 
-var breakTimer = new Timer(300, 'break-timer');
+var breakTimer = new Timer(300);
 breakTimer.id = 'break';
 breakTimer.isActive = false;
+
+// initiates short focus timer for testing purposes
+function testTimer() {
+   focusTimer = new Timer(10);
+  focusTimer.id = 'focus session';
+  focusTimer.isActive = true;
+}
