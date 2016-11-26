@@ -120,6 +120,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // add code
   });
 
+
+
+  // TODO: remove this event listener when timer finishes
+  /**
+    * this event listener starts and stops the current countdown
+    * when the timer is running
+    */
+
+  var startStopClock = function() {
+
+    // determine which timer is currently the active timer
+    // only the active timer will be started
+    var activeTimer = determineActiveTimer();
+
+    if (activeTimer.isFinished === false) {
+      if (activeTimer.timerRunning === false) {
+        activeTimer.startTimer();
+      } else {
+        activeTimer.stopTimer();
+        activeTimer.timerRunning = false;
+      }
+    }
+
+  };
+
+
+  mainCountDownDisplay.addEventListener('click', startStopClock);
+
   /**
     * Following section initiates various elements of the
     * initial UI
@@ -238,10 +266,10 @@ function removeClass(elem, style) {
 */
 function timerFinished() {
   var mainCountDownDisplay = document.getElementById('main-timer-display');
-
   toggleTimer();
   var activeTimer = determineActiveTimer();
 
+  activeTimer.isFinished = true;
   activeTimer.resetOnStart = true;
   mainCountDownDisplay.style.fontSize = '1em';
   mainCountDownDisplay.innerHTML = 'Click to begin ' + activeTimer.id;
@@ -251,6 +279,7 @@ function timerFinished() {
     mainCountDownDisplay.style.fontSize = null;
     mainCountDownDisplay.removeEventListener('click', clickFunc);
     activeTimer.startTimer();
+    activeTimer.isFinished = false;
   };
   mainCountDownDisplay.addEventListener('click', clickFunc);
 
@@ -309,6 +338,12 @@ function Timer(timeSetting) {
   // states whether the timer is currently running or not in order to prevent
   // other actions from taking place
   this.timerRunning = false;
+
+  /**
+    * determines whether the timer is currently in
+    * a completed state
+    */
+  this.isFinished = false,
 
   // determines whether the countdown resets at the break or focus length
   // setting when pressing start.
