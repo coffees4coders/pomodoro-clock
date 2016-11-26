@@ -1,6 +1,7 @@
 /** NOTES
 
 TODO: give reset button functionality
+BUG: Second focus session not running after first break
 
 CSS: for making circle sections:
 http://jsfiddle.net/jonathansampson/7PtEm/
@@ -89,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
       updateDisplay(mainCountDownDisplay, focusTimer.timeSetting, true);
 
       // ensures that after resetting focus length,
-      // timer will restart at new lenght
+      // timer will restart at new length
       focusTimer.resetOnStart = true;
 
     }
@@ -220,6 +221,8 @@ function timerFinished() {
 
   toggleTimer();
   var activeTimer = determineActiveTimer();
+
+  activeTimer.resetOnStart = true;
   mainCountDownDisplay.style.fontSize = '1em';
   mainCountDownDisplay.innerHTML = 'Click to begin ' + activeTimer.id;
 
@@ -339,7 +342,9 @@ Timer.prototype.startTimer = function() {
   self.resetOnStart = false;
 };
 
+// TODO:
 Timer.prototype.stopTimer = function() {
+    determineActiveTimer().timerRunning = false;
     clearInterval(this.currentIntervalID);
   };
 
@@ -358,7 +363,11 @@ breakTimer.isActive = false;
 
 // initiates short focus timer for testing purposes
 function testTimer() {
-   focusTimer = new Timer(10);
+  focusTimer = new Timer(10);
   focusTimer.id = 'focus session';
   focusTimer.isActive = true;
+
+  breakTimer = new Timer(10);
+  breakTimer.id = 'break';
+  focusTimer.isActive = false;
 }
