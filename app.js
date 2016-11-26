@@ -97,24 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   });
 
-  startButton.addEventListener('click', function() {
-    // determine which timer is currently the active timer
-    // only the active timer will be started
-    var activeTimer = determineActiveTimer();
-
-    if (activeTimer.timerRunning === false) {
-      activeTimer.startTimer();
-    }
-
-  });
-
-  stopButton.addEventListener('click', function() {
-    var activeTimer = determineActiveTimer();
-
-    activeTimer.stopTimer();
-    activeTimer.timerRunning = false;
-
-  });
 
   resetButton.addEventListener('click', function() {
     // add code
@@ -122,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-  // TODO: remove this event listener when timer finishes
   /**
     * this event listener starts and stops the current countdown
     * when the timer is running
