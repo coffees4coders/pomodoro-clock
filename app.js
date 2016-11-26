@@ -122,6 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // inserts time into clock UI when page loads
   updateDisplay(mainCountDownDisplay, determineActiveTimer().timeSetting, true);
+  // inserts appropriate title above countdown timer
+  document.getElementById('timer-id').innerHTML = determineActiveTimer().id;
 });
 
 /**
@@ -159,6 +161,7 @@ function toggleTimer() {
   var activeTimer = determineActiveTimer();
   var newActiveTimer;
 
+
   activeTimer.isActive = false;
 
   if (activeTimer.id === 'focus session') {
@@ -168,6 +171,9 @@ function toggleTimer() {
     focusTimer.isActive = true;
     newActiveTimer = focusTimer;
   }
+
+  // inserts appropriate title above countdown timer
+  document.getElementById('timer-id').innerHTML = determineActiveTimer().id;
 
   return newActiveTimer;
 }
