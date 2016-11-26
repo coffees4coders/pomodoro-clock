@@ -120,10 +120,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // add code
   });
 
+  /**
+    * Following section initiates various elements of the
+    * initial UI
+    */
+
+
   // inserts time into clock UI when page loads
   updateDisplay(mainCountDownDisplay, determineActiveTimer().timeSetting, true);
+
   // inserts appropriate title above countdown timer
   document.getElementById('timer-id').innerHTML = determineActiveTimer().id;
+
+  // populate the timer dials
+  document.getElementById('focus-time-dial').innerHTML =
+    convertSecondsToDisplayTime(focusTimer.timeSetting);
+  document.getElementById('break-time-dial').innerHTML =
+    convertSecondsToDisplayTime(breakTimer.timeSetting);
+
 });
 
 /**
