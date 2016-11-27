@@ -1,6 +1,10 @@
 var focusColor = '#dd5Fdd';
 var breakColor = '#dddd5f';
 
+// download alert sound when for when timer finishes
+var dingSound = new Audio('http://res.cloudinary.com/dzxlm4zmj/video/upload/v1480290231/Bell-tone_ff7s0m.mp3');
+
+
 document.addEventListener('DOMContentLoaded', function() {
 
   // Add event listeners for all UI buttons
@@ -276,6 +280,10 @@ function removeClass(elem, style) {
    Takes string as parameter: focus or break, depending on which is ending
 */
 function timerFinished() {
+
+  // plays alert sound
+  dingSound.play()
+
   var mainCountDownDisplay = document.getElementById('main-timer-display');
   toggleTimer();
   var activeTimer = determineActiveTimer();
