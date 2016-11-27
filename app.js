@@ -226,7 +226,7 @@ function drawTimerOutline(currentSeconds, totalSeconds) {
     percent = percent - .5;
     degrees = (percent * 180 / .5) + 90
 
-    clock.style.backgroundImage = `linear-gradient(${degrees}deg, transparent 50%, gray 50%), linear-gradient(90deg, #dd5fdd 50%, transparent 50%)`;
+    clock.style.backgroundImage = `linear-gradient(${degrees}deg, transparent 50%, #000 50%), linear-gradient(90deg, #dd5fdd 50%, transparent 50%)`;
   }
 }
 
