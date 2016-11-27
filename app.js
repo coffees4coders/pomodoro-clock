@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
         breakTimer.timeSetting = parseInt(breakTimer.timeSetting / 60) * 60;
         updateDisplay(breakTimeDial, breakTimer.timeSetting);
 
+        if (breakTimer.isActive === true) {
+          updateDisplay(mainCountDownDisplay, breakTimer.timeSetting, true);
+        }
 
         breakTimer.resetOnStart = true;
 
@@ -48,6 +51,11 @@ document.addEventListener('DOMContentLoaded', function() {
       breakTimer.timeSetting += 60;
       breakTimer.timeSetting = parseInt(breakTimer.timeSetting / 60) * 60;
       updateDisplay(breakTimeDial, breakTimer.timeSetting);
+
+      if (breakTimer.isActive === true) {
+        updateDisplay(mainCountDownDisplay, breakTimer.timeSetting, true);
+      }
+
 
       breakTimer.resetOnStart = true;
 
@@ -65,8 +73,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // rounds down to the nearest minute
         focusTimer.timeSetting = parseInt(focusTimer.timeSetting / 60) * 60;
         updateDisplay(focusTimeDial, focusTimer.timeSetting);
-        updateDisplay(mainCountDownDisplay, focusTimer.timeSetting, true);
 
+        if (focusTimer.isActive === true) {
+          updateDisplay(mainCountDownDisplay, focusTimer.timeSetting, true);
+        }
         /**
           * ensures that after resetting focus length, timer will
           * restart at new length
@@ -86,7 +96,10 @@ document.addEventListener('DOMContentLoaded', function() {
       focusTimer.timeSetting += 60;
       focusTimer.timeSetting = parseInt(focusTimer.timeSetting / 60) * 60;
       updateDisplay(focusTimeDial, focusTimer.timeSetting);
-      updateDisplay(mainCountDownDisplay, focusTimer.timeSetting, true);
+
+      if (focusTimer.isActive === true) {
+        updateDisplay(mainCountDownDisplay, focusTimer.timeSetting, true);
+      }
 
       // ensures that after resetting focus length,
       // timer will restart at new length

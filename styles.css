@@ -75,14 +75,10 @@ h1, h2, h3 {
 }
 
 .control-dial-container-outer {
-  /*margin-top: 30px;*/
 }
 
 .control-dial-container-inner {
 	text-align: center;
-	/*width: 500px;*/
-	/*margin-left: auto;
-	margin-right: auto;*/
 }
 
 .time-selector {
