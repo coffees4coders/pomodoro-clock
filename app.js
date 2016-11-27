@@ -1,14 +1,3 @@
-/** NOTES
-
-TODO: give reset button functionality
-BUG: Second focus session not running after first break
-
-CSS: for making circle sections:
-http://jsfiddle.net/jonathansampson/7PtEm/
-http://stackoverflow.com/questions/21205652/how-to-draw-a-circle-sector-in-css
-*/
-
-
 document.addEventListener('DOMContentLoaded', function() {
 
   // Add event listeners for all UI buttons
@@ -209,8 +198,12 @@ function toggleTimer() {
 }
 
 /**
-  * this function will take a percentage of the countdown remaining
+  * This function will take a percentage of the countdown remaining
   * and will color the same percent of the clock outline
+  *
+  * For making circle pie sections:
+  *   http://jsfiddle.net/jonathansampson/7PtEm/
+  *   http://stackoverflow.com/questions/21205652/how-to-draw-a-circle-sector-in-css
   */
 function drawTimerOutline(currentSeconds, totalSeconds) {
   var clock = document.getElementById('outer-circle-clock');
