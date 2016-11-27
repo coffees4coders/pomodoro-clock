@@ -282,7 +282,7 @@ function timerFinished() {
 
   activeTimer.isFinished = true;
   activeTimer.resetOnStart = true;
-  mainCountDownDisplay.style.fontSize = '1.5em';
+  mainCountDownDisplay.style.fontSize = '2em';
   mainCountDownDisplay.innerHTML = 'Begin ' + activeTimer.id;
 
   var clickFunc = function() {

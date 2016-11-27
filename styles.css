@@ -7,7 +7,7 @@
 		clock color: #5fdddd
 	 focus color: #dd5Fdd
 	 break color: #dddd5f
-/*
+*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -68,6 +68,8 @@ button {
 body {
 	background-color: #000;
 	color: #fff;
+	min-width: 280px;
+	text-align: center;
 }
 
 a:link, a:visited,
@@ -75,15 +77,9 @@ a:hover, a:active {
 	color: #fff;
 }
 
-h1, h2, h3 {
-	text-align: center;
-}
-
-h1, h2 {
-	margin-top: 5px;
-}
-
 h1 {
+	margin-top: 5px;
+	margin-bottom: 10px;
 	font-family: 'Bungee', cursive;
 	font-size: 2.5em;
 }
@@ -94,28 +90,11 @@ h2 {
 	letter-spacing: .5em;
 }
 
-/* Small screen Styles */
-@media screen and (max-width: 400px) {
-	h1 {
-		font-size: 1.5em;
-	}
-
-	h2{
-		font-size: 1em;
-	}
-
-	h3 {
-		font-size: .75em;
-
-	}
-}
-
 h3 {
 	text-transform: capitalize;
 	font-family: 'Orbitron', sans-serif;
   margin-top: 20px;
   margin-bottom: 20px;
-	font-weight: bold;
 }
 
 button {
@@ -139,6 +118,7 @@ span {
 }
 
 .control-dial-container-outer {
+	margin-top: 20px;
 }
 
 .control-dial-container-inner {
@@ -159,7 +139,10 @@ span {
 }
 
 .timer-id {
-	letter-spacing: 1em;
+	margin-top: 40px;
+	letter-spacing: .5em;
+	font-weight: bold;
+	font-size: 1.5em;
 }
 
 .outer-circle {
@@ -195,8 +178,28 @@ span {
 }
 
 footer {
-	margin-top: 10px;
-	font-size: 1em;
+	margin-top: 25px;
+	font-size: .8em;
 	text-align: center;
 	font-family: 'Orbitron', sans-serif;
+}
+
+
+/* Small screen Styles */
+@media screen and (max-width: 400px) {
+	h1 {
+		font-size: 1.5em;
+	}
+
+	h2{
+		font-size: .5em;
+	}
+
+	h3 {
+		font-size: .75em;
+	}
+
+	.timer-id {
+		font-size: .75em;
+	}
 }
