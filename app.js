@@ -1,3 +1,6 @@
+var focusColor = '#dd5Fdd';
+var breakColor = '#dddd5f';
+
 document.addEventListener('DOMContentLoaded', function() {
 
   // Add event listeners for all UI buttons
@@ -130,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function() {
     * initial UI
     */
 
-
   // inserts time into clock UI when page loads
   updateDisplay(mainCountDownDisplay, determineActiveTimer().timeSetting, true);
 
@@ -142,6 +144,9 @@ document.addEventListener('DOMContentLoaded', function() {
     convertSecondsToDisplayTime(focusTimer.timeSetting);
   document.getElementById('break-time-dial').innerHTML =
     convertSecondsToDisplayTime(breakTimer.timeSetting);
+
+    // sets correct color for timer label
+    document.getElementById('timer-id').style.color = focusColor;
 
 });
 
@@ -179,20 +184,28 @@ function determineActiveTimer() {
 function toggleTimer() {
   var activeTimer = determineActiveTimer();
   var newActiveTimer;
+  var timerLabel = document.getElementById('timer-id');
+  var activeColor;
 
 
   activeTimer.isActive = false;
 
   if (activeTimer.id === 'focus session') {
+    // New Timer is Break
     breakTimer.isActive = true;
     newActiveTimer = breakTimer;
+    activeColor = breakColor;
+    timerLabel.innerHTML = breakTimer.id;
   } else {
+    // New Timer is Focus
     focusTimer.isActive = true;
     newActiveTimer = focusTimer;
+    activeColor = focusColor;
+    timerLabel.innerHTML = focusTimer.id;
   }
 
   // inserts appropriate title above countdown timer
-  document.getElementById('timer-id').innerHTML = determineActiveTimer().id;
+  timerLabel.style.color = activeColor;
 
   return newActiveTimer;
 }
@@ -209,24 +222,31 @@ function drawTimerOutline(currentSeconds, totalSeconds) {
   var clock = document.getElementById('outer-circle-clock');
   var activeTimer = determineActiveTimer();
 
+  var activeColor = (activeTimer.id === 'break') ? breakColor : focusColor;
   var percent = (totalSeconds - currentSeconds) / totalSeconds;
 
   if ( percent < .5) {
     degrees = (percent * 180 / .5) + 90;
 
-    clock.style.backgroundImage = `linear-gradient(${degrees}deg, transparent 50%, #dd5fdd 50%), linear-gradient(90deg, #dd5fdd 50%, transparent 50%)`;
+    clock.style.backgroundImage = 'linear-gradient(' + degrees +
+    'deg, transparent 50%,' + activeColor +
+    ' 50%), linear-gradient(90deg,' + activeColor +
+    ' 50%, transparent 50%)';
 
   }
 
   else if (percent === .5) {
-    clock.style.backgroundImage = 'linear-gradient(90deg, #dd5fdd 50%, transparent 50%)';
+    clock.style.backgroundImage = 'linear-gradient(90deg,' + activeColor +
+    ' 50%, transparent 50%)';
     }
 
   else {
     percent = percent - .5;
     degrees = (percent * 180 / .5) + 90
 
-    clock.style.backgroundImage = `linear-gradient(${degrees}deg, transparent 50%, #000 50%), linear-gradient(90deg, #dd5fdd 50%, transparent 50%)`;
+    clock.style.backgroundImage = 'linear-gradient(' + degrees +
+    'deg, transparent 50%, #000 50%), linear-gradient(90deg,' + activeColor +
+    ' 50%, transparent 50%)';
   }
 }
 
@@ -252,8 +272,8 @@ function timerFinished() {
 
   activeTimer.isFinished = true;
   activeTimer.resetOnStart = true;
-  mainCountDownDisplay.style.fontSize = '1em';
-  mainCountDownDisplay.innerHTML = 'Click to begin ' + activeTimer.id;
+  mainCountDownDisplay.style.fontSize = '1.5em';
+  mainCountDownDisplay.innerHTML = 'Begin ' + activeTimer.id;
 
   var clickFunc = function() {
     mainCountDownDisplay.innerHTML = null;
@@ -405,5 +425,5 @@ function testTimer() {
 
   breakTimer = new Timer(10);
   breakTimer.id = 'break';
-  focusTimer.isActive = false;
+  breakTimer.isActive = false;
 }
