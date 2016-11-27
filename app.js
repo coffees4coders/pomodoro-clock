@@ -14,7 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   breakMinusButton.addEventListener('click', function() {
-    if (breakTimer.timerRunning === false) {
+
+    if (breakTimer.timerRunning === true) {
+     breakTimer.stopTimer();
+    }
 
       var breakTimeDial = document.getElementById('break-time-dial');
 
@@ -32,11 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
         breakTimer.resetOnStart = true;
 
       }
-    }
   });
 
   breakPlusButton.addEventListener('click', function() {
-    if (breakTimer.timerRunning === false) {
+
+    if (breakTimer.timerRunning === true) {
+     breakTimer.stopTimer();
+    }
+
       var breakTimeDial = document.getElementById('break-time-dial');
 
       // add 60 seconds and round down to the nearest minute
@@ -51,11 +57,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
       breakTimer.resetOnStart = true;
 
-    }
   });
 
   focusMinusButton.addEventListener('click', function() {
-    if (focusTimer.timerRunning === false) {
+
+    if (focusTimer.timerRunning === true) {
+     focusTimer.stopTimer();
+   }
       var focusTimeDial = document.getElementById('focus-time-dial');
       var mainCountDownDisplay = document.getElementById('main-timer-display');
 
@@ -76,11 +84,14 @@ document.addEventListener('DOMContentLoaded', function() {
         focusTimer.resetOnStart = true;
 
       }
-    }
   });
 
   focusPlusButton.addEventListener('click', function() {
-    if (focusTimer.timerRunning === false) {
+    // stops timer when altering time setting
+    if (focusTimer.timerRunning === true) {
+     focusTimer.stopTimer();
+   }
+
       var focusTimeDial = document.getElementById('focus-time-dial');
       var mainCountDownDisplay = document.getElementById('main-timer-display');
 
@@ -97,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
       // timer will restart at new length
       focusTimer.resetOnStart = true;
 
-    }
 
   });
 
