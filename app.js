@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
       focusPlusButton = document.getElementById('focus-plus'),
       startButton = document.getElementById('start-button'),
       stopButton = document.getElementById('stop-button'),
-      resetButton = document.getElementById('reset-button'),
       mainCountDownDisplay = document.getElementById('main-timer-display');
 
 
@@ -95,11 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
-  });
-
-
-  resetButton.addEventListener('click', function() {
-    // add code
   });
 
 

@@ -49,14 +49,14 @@ table {
 	border-spacing: 0;
 }
 
-/*button {
+button {
 	border:none;
 	background-image:none;
 	background-color:transparent;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
-}*/
+}
 
 /*** END CSS RESET ***/
 
@@ -64,8 +64,30 @@ body {
 	background-color: gray;
 }
 
-.control-button-container {
-  margin-top: 30px;
+h1, h2, h3 {
+	text-align: center;
+}
+
+.time-selector {
+	text-align: center;
+	display: inline-block;
+
+}
+
+.control-dial-container-outer {
+  /*margin-top: 30px;*/
+}
+
+.control-dial-container-inner {
+	text-align: center;
+	/*width: 500px;*/
+	/*margin-left: auto;
+	margin-right: auto;*/
+}
+
+.time-selector {
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 .indicator {
@@ -79,28 +101,13 @@ h3 {
   margin-bottom: 20px;
 }
 
-.alert-box {
-	margin-top: 50px;
-
-	/* temp property for testing */
-	display: none;
-}
-
-.hidden {
-	display: none;
-}
-
-.show {
-	display: block;
-}
-
-
 .outer-circle {
 	width: 300px;
 	height: 300px;
 	position: relative;
 	border-radius: 50%;
-
+	left: 50%;
+	transform: translateX(-50%);
 	background-image: linear-gradient(90deg, transparent 50%, #dd5fdd 50%),
 										linear-gradient(90deg, #dd5fdd 50%, transparent 50%);
 }

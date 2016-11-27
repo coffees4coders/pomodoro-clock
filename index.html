@@ -9,24 +9,32 @@
   <script src="app.js"></script>
 </head>
 <body>
-    <h3>break length</h3>
+  <h1>Pomodoro Clock</h1>
+  <h2>A freeCodeCamp Project</h2>
 
-  <div class="time-selector break-length">
-    <button id="break-minus">-</button>
-    <span class="indicator break-time" id="break-time-dial"></span>
-    <button id="break-plus">+</button>
-  </div>
-  <h3>focus length</h3>
 
-  <div class="time-selector focus-length">
-    <button id="focus-minus">-</button>
-    <span class="indicator focus-time" id="focus-time-dial"></span>
-    <button id="focus-plus">+</button>
+  <div class="control-dial-container-outer">
+
+    <div class="control-dial-container-inner">
+      <div class="time-selector break-length">
+        <h3>break length</h3>
+        <button id="break-minus">-</button>
+        <span class="indicator break-time" id="break-time-dial"></span>
+        <button id="break-plus">+</button>
+      </div>
+
+      <div class="time-selector focus-length">
+        <h3>focus length</h3>
+        <button id="focus-minus">-</button>
+        <span class="indicator focus-time" id="focus-time-dial"></span>
+        <button id="focus-plus">+</button>
+      </div>
+
+    </div>
   </div>
-  <div class="control-button-container">
-    <button class="reset-button" id="reset-button">Reset</button>
-  </div>
-  <h2 id='timer-id'></h2>
+
+
+  <h3 class="timer-id" id="timer-id"></h2>
   <div class="outer-circle" id="outer-circle-clock">
     <div class="counter" id="main-timer-display"></div>
 </div>
