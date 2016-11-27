@@ -106,6 +106,7 @@ button {
 	height: 30px;
 	font-weight: bold;
 	color: #fff;
+	padding: 0;
 }
 
 span {
@@ -118,7 +119,7 @@ span {
 }
 
 .control-dial-container-outer {
-	margin-top: 20px;
+	margin-top: 15px;
 }
 
 .control-dial-container-inner {
@@ -178,7 +179,7 @@ span {
 }
 
 footer {
-	margin-top: 25px;
+	margin-top: 20px;
 	font-size: .8em;
 	text-align: center;
 	font-family: 'Orbitron', sans-serif;
@@ -201,5 +202,9 @@ footer {
 
 	.timer-id {
 		font-size: .75em;
+	}
+
+	button {
+		font-size: .8em;
 	}
 }
