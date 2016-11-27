@@ -68,6 +68,16 @@ h1, h2, h3 {
 	text-align: center;
 }
 
+button {
+	border: 1px solid #000;
+	border-radius: 50%;
+	outline: 0;
+	font-size: 1em;
+	width: 30px;
+	height: 30px;
+	font-weight: bold;
+}
+
 .time-selector {
 	text-align: center;
 	display: inline-block;
@@ -90,6 +100,8 @@ h1, h2, h3 {
   width: 30px;
   display: inline-block;
   text-align: center;
+	font-weight: bold;
+	font-size: 1em;
 }
 
 h3 {
